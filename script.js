@@ -3,6 +3,49 @@
    Intro growth-chart sequence + scroll-driven reveals
    ============================================================ */
 
+/* ---------------------------------------------------------------
+   FAIL-SAFES — run first, with zero dependency on GSAP.
+   On flaky mobile connections the GSAP/ScrollTrigger CDN scripts
+   can load slowly or get blocked, which (without this) would leave
+   the intro overlay stuck on screen forever and the nav toggle
+   dead, since everything below lived inside GSAP-dependent code.
+   --------------------------------------------------------------- */
+(function initMobileNavFailSafe(){
+  const nav = document.getElementById('nav');
+  const toggle = document.getElementById('nav-toggle');
+  if(!nav || !toggle) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  document.querySelectorAll('.nav-links a').forEach((a) => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+setTimeout(() => {
+  const intro = document.getElementById('intro');
+  if(intro && intro.style.display !== 'none'){
+    intro.style.transition = 'opacity .4s ease';
+    intro.style.opacity = '0';
+    setTimeout(() => { intro.style.display = 'none'; }, 450);
+    document.querySelectorAll('#hero .reveal-up').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+}, 6000);
+
+const gsapReady = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+if(!gsapReady){
+  console.error('GSAP/ScrollTrigger failed to load — running in fallback mode (fail-safes above still apply).');
+}
+
+if(gsapReady){
+
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------------------------------------------------------
@@ -561,25 +604,4 @@ ScrollTrigger.create({
   toggleClass: { targets: '#nav', className: 'nav-scrolled' }
 });
 
-/* ---------------------------------------------------------------
-   7. Mobile nav toggle (hamburger)
-   --------------------------------------------------------------- */
-(function initMobileNav(){
-  const nav = document.getElementById('nav');
-  const toggle = document.getElementById('nav-toggle');
-  if(!nav || !toggle) return;
-
-  const closeMenu = () => {
-    nav.classList.remove('nav-open');
-    toggle.setAttribute('aria-expanded', 'false');
-  };
-
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('nav-open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  document.querySelectorAll('.nav-links a').forEach((a) => {
-    a.addEventListener('click', closeMenu);
-  });
-})();
+} /* end gsapReady block */
