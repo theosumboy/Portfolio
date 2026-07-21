@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akshat Sinha — Operations Associate</title>
+<meta name="description" content="Akshat Sinha — Operations Associate at Codingal. Turning business metrics into magical numbers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ SIGNATURE INTERACTION LAYER ============ -->
+<div id="scroll-progress" aria-hidden="true"><div id="scroll-progress-fill"></div></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="status-ticker" aria-hidden="true"><span id="status-ticker-text">Syncing metrics…</span></div>
+
+<!-- ============ INTRO: METRICS / GROWTH SEQUENCE ============ -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-sky"></div>
+  <div class="intro-grid"></div>
+
+  <svg id="intro-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="barGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%"  stop-color="#2547a0"/>
+        <stop offset="100%" stop-color="#7db2ff"/>
+      </linearGradient>
+      <linearGradient id="barGradientHi" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%"  stop-color="#3b7cff"/>
+        <stop offset="100%" stop-color="#d7e6ff"/>
+      </linearGradient>
+      <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"  stop-color="#6fa8ff" stop-opacity="0.32"/>
+        <stop offset="100%" stop-color="#6fa8ff" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="chartGlow" x="-150%" y="-150%" width="400%" height="400%">
+        <feGaussianBlur stdDeviation="7" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- faint dashboard grid, sets the "data" mood before anything moves -->
+    <g id="chart-grid" opacity="0">
+      <line x1="480" y1="260" x2="1120" y2="260" class="grid-line"/>
+      <line x1="480" y1="380" x2="1120" y2="380" class="grid-line"/>
+      <line x1="480" y1="500" x2="1120" y2="500" class="grid-line"/>
+    </g>
+
+    <!-- baseline the bars grow from -->
+    <line id="chart-baseline" x1="480" y1="620" x2="1120" y2="620" />
+
+    <!-- six growth bars, staggered heights, last one the standout metric -->
+    <g id="chart-bars">
+      <rect class="chart-bar" data-h="40"  x="534"  y="620" width="52" height="0" rx="5" fill="url(#barGradient)"/>
+      <rect class="chart-bar" data-h="90"  x="634"  y="620" width="52" height="0" rx="5" fill="url(#barGradient)"/>
+      <rect class="chart-bar" data-h="70"  x="734"  y="620" width="52" height="0" rx="5" fill="url(#barGradient)"/>
+      <rect class="chart-bar" data-h="160" x="834"  y="620" width="52" height="0" rx="5" fill="url(#barGradient)"/>
+      <rect class="chart-bar" data-h="130" x="934"  y="620" width="52" height="0" rx="5" fill="url(#barGradient)"/>
+      <rect class="chart-bar chart-bar-hi" data-h="340" x="1034" y="620" width="52" height="0" rx="5" fill="url(#barGradientHi)" filter="url(#chartGlow)"/>
+    </g>
+
+    <!-- soft filled area under the trend line, reinforces "growth going up" -->
+    <path id="chart-area" d="M560,580 L660,530 L760,550 L860,460 L960,490 L1060,280 L1060,620 L560,620 Z" fill="url(#areaGradient)" opacity="0"/>
+
+    <!-- trend line sweeping across the bar tops -->
+    <path id="chart-trend" d="M560,580 L660,530 L760,550 L860,460 L960,490 L1060,280" />
+    <circle id="chart-trend-dot" cx="1060" cy="280" r="7" />
+
+    <!-- the payoff number: a real stat from Akshat's work -->
+    <text id="chart-counter" x="1060" y="195">0%</text>
+    <text id="chart-counter-label" x="1060" y="222">REVENUE GROWTH LED</text>
+
+    <!-- soft pulse at the peak once the counter lands -->
+    <circle id="chart-pulse" cx="1060" cy="280" r="0" />
+  </svg>
+
+  <div id="intro-text">
+    <span class="line line-1">AKSHAT</span>
+    <span class="line line-2">SINHA</span>
+  </div>
+
+  <div id="intro-tagline">Turning business metrics into magical numbers</div>
+
+  <button id="skip-intro" type="button">Skip <span>→</span></button>
+</div>
+
+<!-- ============ FIXED BACKGROUND (pinned scene) ============ -->
+<div id="bg-scene" aria-hidden="true">
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+  <svg class="bg-stadium" viewBox="0 0 1600 400" preserveAspectRatio="none">
+    <path d="M0,400 L0,260 Q 400,150 800,180 Q 1200,210 1600,140 L1600,400 Z" />
+  </svg>
+  <div class="bg-particles" id="bg-particles"></div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div id="content">
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-left">
+      <div class="nav-mark">AS</div>
+      <span class="nav-status"><span class="status-dot"></span>Available for opportunities</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about" data-nav="about">About</a></li>
+      <li><a href="#experience" data-nav="experience">Experience</a></li>
+      <li><a href="#projects" data-nav="projects">Projects</a></li>
+      <li><a href="#skills" data-nav="skills">Skills</a></li>
+      <li><a href="#contact" data-nav="contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header id="hero">
+    <p class="eyebrow reveal-up">Operations Associate · Codingal</p>
+    <h1 class="reveal-up">Akshat Sinha</h1>
+    <p class="hero-tagline reveal-up">Turning business metrics into magical numbers.</p>
+    <p class="hero-sub reveal-up">I take messy operations — spreadsheets, slot supply, teacher pipelines, payroll for hundreds of people — and turn them into systems that run themselves.</p>
+
+    <div class="hero-kpis reveal-up">
+      <div class="hero-kpi">
+        <span class="hero-kpi-num" data-count-to="1000" data-suffix="%+">0%</span>
+        <span class="hero-kpi-label">Revenue growth led</span>
+      </div>
+      <div class="hero-kpi">
+        <span class="hero-kpi-num" data-count-to="800" data-suffix="+">0</span>
+        <span class="hero-kpi-label">Teachers, payroll owned</span>
+      </div>
+      <div class="hero-kpi">
+        <span class="hero-kpi-num" data-count-to="700" data-suffix="+">0</span>
+        <span class="hero-kpi-label">Educators scaled</span>
+      </div>
+      <div class="hero-kpi">
+        <span class="hero-kpi-num" data-count-to="8" data-suffix="">0</span>
+        <span class="hero-kpi-label">Member team led</span>
+      </div>
+    </div>
+
+    <div class="hero-cta reveal-up">
+      <a href="#projects" class="btn btn-primary">See the work</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+    <div class="scroll-cue"><span></span>Scroll</div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="side-label-rail" aria-hidden="true"><span class="side-label-text">About</span></div>
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>About</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy">
+        <p class="lead">I'm an avid learner who can be molded into different situations as per the requirements — yielding fruitful results even in the most dire situations.</p>
+        <p>At Codingal (YC W21), I mentor Team Leads, run quality audits, and keep the machinery of operations — trial and course slot supply, payroll for 800+ teachers, onboarding pipelines — running accurately and on time. I sit in on strategic discussions with the CEO and VP of Operations, and I currently lead an 8-member team responsible for teacher supply-demand.</p>
+        <p>Before that, I scaled a global teacher community from 450 to 700+ educators, and led a project that grew a partner channel's revenue by over 1000%. I studied Computer Science at VIT Bhopal, which means I don't just manage systems — I build them.</p>
+      </div>
+      <div class="about-facts">
+        <div class="fact">
+          <svg class="fact-spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path class="spark-path" d="M2,30 L22,24 L42,26 L62,14 L82,8 L98,3"/></svg>
+          <span class="fact-num" data-count-to="1000" data-suffix="%+">0%</span>
+          <span class="fact-label">revenue growth led on Outschool project</span>
+        </div>
+        <div class="fact">
+          <svg class="fact-spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path class="spark-path" d="M2,28 L22,25 L42,20 L62,16 L82,10 L98,6"/></svg>
+          <span class="fact-num" data-count-to="800" data-suffix="+">0</span>
+          <span class="fact-label">teachers, payroll accuracy owned</span>
+        </div>
+        <div class="fact">
+          <svg class="fact-spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path class="spark-path" d="M2,29 L22,22 L42,24 L62,15 L82,12 L98,5"/></svg>
+          <span class="fact-num" data-count-to="700" data-suffix="+">0</span>
+          <span class="fact-label">educators in community scaled</span>
+        </div>
+        <div class="fact">
+          <svg class="fact-spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path class="spark-path" d="M2,20 L22,18 L42,22 L62,12 L82,16 L98,8"/></svg>
+          <span class="fact-num" data-count-to="8" data-suffix="">0</span>
+          <span class="fact-label">member team currently led</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="side-label-rail" aria-hidden="true"><span class="side-label-text">Experience</span></div>
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Experience</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-track"><div class="timeline-fill"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-marker tl-marker-lg"></div>
+        <div class="tl-date">Oct 2025 — Present</div>
+        <div class="tl-body">
+          <h3>Operations Associate</h3>
+          <p class="tl-org">Codingal · Bengaluru</p>
+          <ul>
+            <li>Lead an 8-member team managing teacher supply-demand operations, ensuring timely lead allocation and high booking efficiency.</li>
+            <li>Work directly with the Director of Operations; participate in weekly strategic discussions with the CEO and VP of Operations.</li>
+            <li>Improved key operational metrics and efficiency across multiple business-as-usual processes.</li>
+            <li>Own flawless, accurate payroll delivery for 800 teachers; draft policies that improved quality metrics and cost.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-marker tl-marker-md"></div>
+        <div class="tl-date">Apr 2025 — Oct 2025</div>
+        <div class="tl-body">
+          <h3>Growth &amp; Ops Intern</h3>
+          <p class="tl-org">Codingal · Bengaluru</p>
+          <ul>
+            <li>Scaled a global teacher community from 450+ to 700+ educators by redesigning onboarding, training, and retention workflows.</li>
+            <li>Built international onboarding processes covering timezone coordination, compliance, and cross-border salary management.</li>
+            <li>Led an ongoing Outschool project to over 1000% revenue growth through end-to-end ownership.</li>
+            <li>Developed a Redash dashboard for teacher allocation and metric tracking; mentored teachers into Senior Instructor and Team Lead roles.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-marker tl-marker-sm"></div>
+        <div class="tl-date">Jul 2022 — Jul 2024</div>
+        <div class="tl-body">
+          <h3>Founder &amp; President, IoT Club</h3>
+          <p class="tl-org">VIT Bhopal</p>
+          <ul>
+            <li>Founded and led a 100+ member community, delivering programs that reached 1,000+ students.</li>
+            <li>Co-authored a research paper on the Cuckoo Search Algorithm.</li>
+            <li>Captained the cricket team at the university's annual sports fest, AAVAHAN'23.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item tl-condensed">
+        <div class="tl-marker tl-marker-sm"></div>
+        <div class="tl-date">2023 — 2024</div>
+        <div class="tl-body">
+          <h3>Early Data Science &amp; Software Internships</h3>
+          <p class="tl-org">CodeClause · TechnoHacks · Navodita Infotech · SpreadTech · CodSoft · Oasis Infobyte · Bharat Intern · The Sparks Foundation</p>
+          <ul>
+            <li>Six-plus internships across data science, Python, and web development while completing my degree — the foundation the operations work is built on.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="side-label-rail" aria-hidden="true"><span class="side-label-text">Projects</span></div>
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+
+      <article class="project-card project-featured">
+        <div class="project-tag">Featured build</div>
+        <h3>Teacher Training Funnel</h3>
+        <p class="project-desc">A role-based web app that replaced a messy multi-tab spreadsheet with a permissioned, real-time system running Codingal's entire teacher onboarding pipeline — recruiting intake, attendance, three rounds of mock evaluations, a Mentor → TL → Ops sign-off chain, and live go-live tracking.</p>
+        <div class="metric-funnel">
+          <div class="funnel-row" style="--w:100%"><span>Intake</span></div>
+          <div class="funnel-row" style="--w:78%"><span>Mock Evaluations</span></div>
+          <div class="funnel-row" style="--w:56%"><span>Sign-off Chain</span></div>
+          <div class="funnel-row" style="--w:36%"><span>Go-Live</span></div>
+        </div>
+        <ul class="project-points">
+          <li>Admin-configurable permissions matrix — reassign any edit right between roles with zero code changes.</li>
+          <li>Self-driving status engine that derives each candidate's stage automatically, eliminating conflicting manual statuses.</li>
+          <li>Real-time two-way sync to Google Sheets, live analytics dashboard, and 50-step undo/redo.</li>
+        </ul>
+        <div class="project-stack">Google Apps Script · HTML/CSS/JS · Google Sheets API</div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-tag">Growth</div>
+        <h3>Outschool Revenue Growth</h3>
+        <p class="project-desc">End-to-end ownership of a partner-channel growth initiative — from teacher allocation logic to reporting infrastructure.</p>
+        <div class="metric-growth">
+          <svg viewBox="0 0 220 90" preserveAspectRatio="none">
+            <rect class="mg-bar" data-h="14" x="4"   y="86" width="26" height="0" rx="3"/>
+            <rect class="mg-bar" data-h="26" x="42"  y="86" width="26" height="0" rx="3"/>
+            <rect class="mg-bar" data-h="20" x="80"  y="86" width="26" height="0" rx="3"/>
+            <rect class="mg-bar" data-h="48" x="118" y="86" width="26" height="0" rx="3"/>
+            <rect class="mg-bar mg-bar-hi" data-h="80" x="156" y="86" width="26" height="0" rx="3"/>
+            <path class="mg-line" d="M17,72 L55,60 L93,66 L131,38 L169,6"/>
+          </svg>
+          <span class="metric-growth-num" data-count-to="1000" data-suffix="%+">0%</span>
+        </div>
+        <ul class="project-points">
+          <li>Drove over 1000% revenue growth through strategic, hands-on improvements.</li>
+          <li>Designed a teacher allocation algorithm to better match slot supply with demand.</li>
+          <li>Built a Redash dashboard for ongoing metric tracking and reporting.</li>
+        </ul>
+        <div class="project-stack">Redash · SQL · Process design</div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-tag">Civic tech</div>
+        <h3>JanMat</h3>
+        <p class="project-desc">A secure remote voting web application built to widen participation for people with disabilities or in remote locations.</p>
+        <div class="metric-donut-row">
+          <div class="metric-donut" data-pct="40">
+            <svg viewBox="0 0 80 80">
+              <circle class="donut-track" cx="40" cy="40" r="34"/>
+              <circle class="donut-fill" cx="40" cy="40" r="34"/>
+            </svg>
+            <div class="donut-label">
+              <span class="donut-num">0%</span>
+              <span class="donut-caption">UX improvement</span>
+            </div>
+          </div>
+          <div class="metric-donut" data-pct="33">
+            <svg viewBox="0 0 80 80">
+              <circle class="donut-track" cx="40" cy="40" r="34"/>
+              <circle class="donut-fill" cx="40" cy="40" r="34"/>
+            </svg>
+            <div class="donut-label">
+              <span class="donut-num">0%</span>
+              <span class="donut-caption">Participation lift</span>
+            </div>
+          </div>
+        </div>
+        <ul class="project-points">
+          <li>Improved overall user experience by 40%.</li>
+          <li>Increased voter participation in remote areas by 33%.</li>
+        </ul>
+        <div class="project-stack">HTML/CSS · JavaScript · SQL</div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-tag">IoT</div>
+        <h3>Smart Speaker</h3>
+        <p class="project-desc">Converted a standard Bluetooth speaker into a dual-assistant smart speaker running both Alexa and Google Assistant on one device.</p>
+        <div class="metric-donut-row metric-donut-row-single">
+          <div class="metric-donut" data-pct="50">
+            <svg viewBox="0 0 80 80">
+              <circle class="donut-track" cx="40" cy="40" r="34"/>
+              <circle class="donut-fill" cx="40" cy="40" r="34"/>
+            </svg>
+            <div class="donut-label">
+              <span class="donut-num">0%</span>
+              <span class="donut-caption">Efficiency gain</span>
+            </div>
+          </div>
+        </div>
+        <ul class="project-points">
+          <li>Gave users two assistants for the price of one.</li>
+          <li>Designed for accessibility across technical skill levels, improving efficiency by 50%.</li>
+        </ul>
+        <div class="project-stack">Raspberry Pi 3 · IoT</div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="side-label-rail" aria-hidden="true"><span class="side-label-text">Skills</span></div>
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Skills &amp; Tools</h2>
+    </div>
+
+    <div class="skills-network" aria-hidden="true">
+      <svg viewBox="0 0 1000 130" preserveAspectRatio="xMidYMid meet">
+        <line x1="125" y1="55" x2="875" y2="55" class="network-line"/>
+        <g class="network-node" data-r="22" transform="translate(125,55)"><circle r="0"/><text y="48">Operations</text></g>
+        <g class="network-node" data-r="28" transform="translate(375,55)"><circle r="0"/><text y="48">Platforms &amp; Tools</text></g>
+        <g class="network-node" data-r="25" transform="translate(625,55)"><circle r="0"/><text y="48">AI Tools</text></g>
+        <g class="network-node" data-r="25" transform="translate(875,55)"><circle r="0"/><text y="48">Technical</text></g>
+      </svg>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h4>Operations</h4>
+        <div class="tags">
+          <span>Operations Management</span><span>Strategic Thinking</span><span>First-Principles Thinking</span><span>Leadership</span><span>Multi-management</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>Platforms &amp; Tools</h4>
+        <div class="tags">
+          <span>Jira</span><span>Atlas</span><span>Trello</span><span>Redash</span><span>Looker Studio</span><span>Zoko</span><span>Brevo</span><span>Canva</span><span>MS Office Suite</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>AI Tools</h4>
+        <div class="tags">
+          <span>ChatGPT</span><span>Claude</span><span>Gemini</span><span>Manus AI</span><span>WhisperFlow</span><span>Eleven Labs</span><span>HeyGen</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>Technical</h4>
+        <div class="tags">
+          <span>Python</span><span>SQL</span><span>JavaScript</span><span>HTML/CSS</span><span>Java</span><span>C/C++</span><span>Google Cloud Platform</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-strip">
+      <span>Google Cloud Certified — Cloud Digital Leader</span>
+      <span>Google Cloud Computing Foundations</span>
+      <span>Infrastructure &amp; App Modernization, Google Cloud</span>
+      <span>Design Thinking for Innovation — Coursera</span>
+      <span>615+ problems solved, LeetCode</span>
+      <span>TCS CodeVita — Round 1 Qualified</span>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="side-label-rail" aria-hidden="true"><span class="side-label-text">Contact</span></div>
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2>Let's talk</h2>
+    </div>
+    <div class="contact-wrap">
+      <div class="signal-line" aria-hidden="true">
+        <svg viewBox="0 0 400 40" preserveAspectRatio="none">
+          <path d="M0,20 L140,20 L155,6 L170,34 L185,20 L400,20" class="signal-path"/>
+        </svg>
+      </div>
+      <p class="lead">Have a problem worth solving, a team that needs its operations tightened, or just want to talk shop? I'd love to hear from you.</p>
+      <div class="contact-links">
+        <a href="mailto:ak0005sinha@gmail.com" class="contact-link">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">ak0005sinha@gmail.com</span>
+        </a>
+        <a href="tel:+919696925402" class="contact-link">
+          <span class="contact-label">Phone</span>
+          <span class="contact-value">+91 96969 25402</span>
+        </a>
+        <a href="https://www.linkedin.com/in/akshat-sinha-08991222b/" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">akshat-sinha-08991222b</span>
+        </a>
+      </div>
+    </div>
+    <footer>
+      <p>Designed &amp; built by Akshat Sinha.</p>
+    </footer>
+  </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
