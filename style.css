@@ -311,6 +311,44 @@ html.has-custom-cursor, html.has-custom-cursor *{ cursor:none !important; }
 }
 @media (max-width:700px){ .nav-status{ display:none; } }
 
+#nav-toggle{
+  display:none;
+  width:38px; height:38px;
+  background:transparent; border:1px solid var(--line); border-radius:10px;
+  flex-direction:column; align-items:center; justify-content:center; gap:5px;
+  cursor:pointer; flex-shrink:0;
+}
+#nav-toggle span{
+  display:block; width:18px; height:1.5px;
+  background:var(--ink);
+  transition:transform .25s, opacity .25s, background .25s;
+}
+#nav.nav-open #nav-toggle{ border-color:var(--blue); }
+#nav.nav-open #nav-toggle span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+#nav.nav-open #nav-toggle span:nth-child(2){ opacity:0; }
+#nav.nav-open #nav-toggle span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+
+@media (max-width:900px){
+  #nav-toggle{ display:flex; }
+  .nav-links{
+    position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; gap:0;
+    background:rgba(4,6,12,0.97);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    max-height:0; overflow:hidden;
+    transition:max-height .35s ease;
+  }
+  .nav-links li{ width:100%; }
+  .nav-links a{
+    display:block; padding:16px max(24px, calc((100vw - var(--maxw))/2));
+    border-top:1px solid var(--line);
+    font-size:1rem;
+  }
+  .nav-links a::after{ display:none; }
+  #nav.nav-open .nav-links{ max-height:400px; }
+}
+
 /* ================================================================
    HERO
    ================================================================ */
@@ -861,8 +899,15 @@ footer{
   .projects-grid{ grid-template-columns:1fr; }
   .project-featured{ grid-column:span 1; }
   .skills-grid{ grid-template-columns:1fr; }
-  .nav-links{ display:none; }
   section{ padding:100px 20px; }
   .metric-growth{ flex-wrap:wrap; }
   .metric-donut-row{ flex-wrap:wrap; gap:20px; }
+  .project-card{ padding:24px; }
+  .skills-network{ display:none; }
+}
+
+@media (max-width: 480px){
+  #hero{ padding:110px 20px 50px; }
+  .metric-growth svg{ width:150px; }
+  .hero-kpi{ flex:1 1 100%; border-left:none; padding-left:0; }
 }
