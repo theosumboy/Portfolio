@@ -49,12 +49,14 @@ if(gsapReady){
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------------------------------------------------------
-   0. Respect reduced-motion users, and skip the wide-format chart
-      intro on narrow/portrait phones where its 1600x900 canvas
-      would otherwise get cropped down to an unreadable sliver.
+   0. Respect reduced-motion users. The intro SVG uses
+      preserveAspectRatio="xMidYMid meet" (set in index.html) so its
+      1600x900 canvas always scales to fit any screen without ever
+      cropping — narrow phones just see it letterboxed a bit smaller,
+      never sliced. That means every screen size gets the same full
+      animated chart intro.
    --------------------------------------------------------------- */
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isNarrowScreen = window.matchMedia('(max-width: 760px), (max-aspect-ratio: 3/4)').matches;
 
 /* ---------------------------------------------------------------
    1. Background particles (fixed pinned scene)
@@ -138,19 +140,6 @@ const introKillTargets = '#chart-grid, #chart-baseline, .chart-bar, #chart-area,
 if(prefersReduced){
   introEl.style.display = 'none';
   revealHero();
-} else if(isNarrowScreen){
-  // Simplified phone intro: skip the wide chart canvas entirely (it can't be
-  // cropped down to a portrait screen without breaking), just reveal the
-  // name/tagline directly so mobile still gets a branded, quick moment.
-  document.getElementById('intro-svg').style.display = 'none';
-  const mtl = gsap.timeline({ delay: 0.2 });
-  mtl
-    .to('#intro-text .line-1', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' })
-    .to('#intro-text .line-2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.45')
-    .to('#intro-tagline', { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.25')
-    .to(skipBtn, { opacity: 1, duration: 0.4 }, '-=0.5')
-    .to({}, { duration: 1.3 })
-    .call(finishIntro);
 } else {
   const tl = gsap.timeline({ delay: 0.3 });
   const counterEl = document.getElementById('chart-counter');
