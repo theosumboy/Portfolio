@@ -291,6 +291,34 @@
         <div class="project-stack">Google Apps Script · HTML/CSS/JS · Google Sheets API</div>
       </article>
 
+      <article class="project-card project-featured">
+        <div class="project-tag">Internal tool · Codingal</div>
+        <h3>Interview Scheduling System</h3>
+        <p class="project-desc">A two-app scheduling platform that replaced a manual, spreadsheet-and-phone-call process for coordinating technical interviews across three subjects (Coding, ELA, Math) — turning recruiters ringing candidates and eyeballing a shared availability sheet into self-service booking with automatic calendar invites, eligibility checks, and live reporting.</p>
+        <div class="metric-stats">
+          <div class="stat-block">
+            <span class="stat-num" data-count-to="2" data-suffix="">0</span>
+            <span class="stat-label">Apps built end-to-end</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num" data-count-to="3" data-suffix="">0</span>
+            <span class="stat-label">Interview subjects covered</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num" data-count-to="12000" data-suffix="+">0</span>
+            <span class="stat-label">Candidate rows validated live</span>
+          </div>
+        </div>
+        <ul class="project-points">
+          <li>Candidates and recruiters self-book a subject, language/interview type, and open slot; the system auto-assigns the least-busy qualified interviewer and creates a Google Calendar event with a Meet link.</li>
+          <li>Enforces real business rules in code — eligibility gating from the candidate database, a 2-interview lifetime cap, first-time vs. reschedule detection pinned to the original interviewer, and recruiter↔candidate assignment matching.</li>
+          <li>Cancel/reschedule engine frees the slot and syncs every affected Google Calendar automatically.</li>
+          <li>Admin analytics dashboard — per-interviewer offered/booked/utilization, recruiter occupancy, and subject-level availability with date-range filters.</li>
+          <li>Concurrency-safe booking via locking and slot reservation prevents double-booking; request-level memoization and short-TTL caching keep validation fast against the 12k-row dataset.</li>
+        </ul>
+        <div class="project-stack">Google Apps Script · Google Sheets · Google Calendar API · HtmlService · CacheService/LockService</div>
+      </article>
+
       <article class="project-card">
         <div class="project-tag">Growth</div>
         <h3>Outschool Revenue Growth</h3>
