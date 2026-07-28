@@ -747,6 +747,31 @@ section > *:not(.section-head){ max-width:var(--maxw); margin-left:auto; margin-
   text-shadow:0 0 20px rgba(59,124,255,0.4);
 }
 
+.metric-stats{
+  display:flex; flex-wrap:wrap; gap:24px;
+  margin:18px 0 22px;
+}
+.stat-block{
+  display:flex; flex-direction:column;
+  border-left:1px solid var(--line);
+  padding-left:16px;
+}
+.stat-block:first-child{ border-left:none; padding-left:0; }
+.stat-num{
+  font-family:var(--ff-mono);
+  font-weight:700;
+  font-size:1.5rem;
+  color:var(--blue-2);
+  text-shadow:0 0 20px rgba(59,124,255,0.4);
+}
+.stat-label{
+  font-size:0.72rem;
+  color:var(--muted);
+  max-width:130px;
+  line-height:1.35;
+  margin-top:4px;
+}
+
 .metric-donut-row{
   display:flex; gap:28px; margin:18px 0 22px;
 }
@@ -902,6 +927,7 @@ footer{
   section{ padding:100px 20px; }
   .metric-growth{ flex-wrap:wrap; }
   .metric-donut-row{ flex-wrap:wrap; gap:20px; }
+  .metric-stats{ gap:20px; }
   .project-card{ padding:24px; }
   .skills-network{ display:none; }
 }
